@@ -1,14 +1,6 @@
 import React, { Component } from 'react';
-import {
-  Container,
-  Content
-} from 'native-base';
-import {
-  View,
-  Image,
-  StyleSheet,
-  Dimensions
-} from 'react-native';
+import { Container, Content} from 'native-base';
+import {View, Image, StyleSheet, Dimensions} from 'react-native';
 import { inject } from 'mobx-react';
 
 import Login from '../components/login.component';

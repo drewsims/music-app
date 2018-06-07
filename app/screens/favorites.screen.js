@@ -4,7 +4,8 @@ import { inject } from 'mobx-react';
 import { ListItem, Card, Button, Icon } from 'react-native-elements';
 import ScrollableTabView, { ScrollableTabBar, } from 'react-native-scrollable-tab-view';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps'
-
+import { createStackNavigator } from 'react-navigation'; // Version can be specified in package.json
+import { Marker } from 'react-native-maps';
 //@inject("stores")
 export default class FavoritesScreen extends Component {
   constructor(props) {
@@ -13,23 +14,47 @@ export default class FavoritesScreen extends Component {
 
   render() {
     return (
+      <ScrollableTabView
+        style={{marginTop: 0, backgroundColor: "white" }}
+        initialPage={0}
+        renderTabBar={() => <ScrollableTabBar backgroundColor='#33ccff'/>}
+      >
 
-      // implemented with Text and Button as children
-      <Card
-        title='HELLO WORLD'
-        image={require('../../images/splash.jpg')}>
-
-        <Text style={{marginBottom: 10}}>
-          The idea with React Native Elements is more about component structure than actual design.
-        </Text>
-        <Button
-          icon={<Icon name='code' color='#ffffff' />}
-          backgroundColor='#03A9F4'
-          fontFamily='Lato'
-          buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
-          title='VIEW NOW' />
-      </Card>
-
+      <ScrollView tabLabel='List' >
+      {
+        users.map((l, i) => (
+          <ListItem
+            key={i}
+            leftAvatar={{ source: { uri: l.avatar_url } }}
+            title={l.name}
+            subtitle={l.subtitle}
+            onPress={() => {this.props.navigation.navigate('Profile',
+             { name: l.name,});
+           }}
+          />
+        ))
+      }
+    </ScrollView>
+    <View tabLabel='Map' style ={styles.containerMap}>
+            <MapView
+              provider={PROVIDER_GOOGLE}
+              style={styles.map}
+              region={{
+                latitude: 37.78825,
+                longitude: -122.4324,
+                latitudeDelta: 0.015,
+                longitudeDelta: 0.0121,
+              }}
+            >
+            <MapView.Marker
+                        coordinate={{latitude: 37.78825,
+                        longitude: -122.4324}}
+                        title={"title"}
+                        description={"description"}
+                     />
+            </MapView>
+          </View>
+      </ScrollableTabView>
     );
   }
 }

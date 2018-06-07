@@ -2,23 +2,45 @@ import { createStackNavigator } from 'react-navigation'; // Version can be speci
 import React, { Component } from 'react';
 import { Image, View, StyleSheet, Dimensions, ScrollView, Text } from 'react-native';
 import { inject } from 'mobx-react';
-import { ListItem, Header, Card, Button, Icon } from 'react-native-elements';
+import { ListItem, Header, Card, Button, Icon, CheckBox, Rating } from 'react-native-elements';
 import ScrollableTabView, { ScrollableTabBar, } from 'react-native-scrollable-tab-view';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import { Marker } from 'react-native-maps';
 
+
+export default class SplashScreen extends Component {
+  constructor(props) {
+    super(props);
+      this.state = {
+        checked:false,};
+  }
+  render() {
+    return <RootStack />;
+  }
+}
+
 class HomeScreen extends Component {
+  static navigationOptions = {
+     headerTitle: 'LogoTitle',
+     // headerRight: (
+     //   <Button
+     //     onPress={() => alert('This is a button!')}
+     //     title="Info"
+     //     color="#fff"
+     //   />
+     // ),
+   };
+
   render() {
     return (
       <ScrollableTabView
-        style={{marginTop: 0, }}
+        style={{marginTop: 0, backgroundColor: "white" }}
         initialPage={0}
-        renderTabBar={() => <ScrollableTabBar />}
+        renderTabBar={() => <ScrollableTabBar backgroundColor='#33ccff'/>}
       >
 
       <ScrollView tabLabel='List' >
       {
-
         list.map((l, i) => (
           <ListItem
             key={i}
@@ -57,26 +79,48 @@ class HomeScreen extends Component {
 }
 
 class ProfileView extends Component {
+  state = {
+    checked:false,};
   render() {
     const { navigation } = this.props;
     const name = navigation.getParam('name', 'NO-ID');
+    const HEADPHONE_IMAGE = require('../../images/headphones.jpg');
 
     return (
+        <ScrollView>{
       // implemented with Text and Button as children
       <Card
-        title='HELLO WORLD'
+        title={JSON.stringify(name)}
         image={require('../../images/splash.jpg')}>
-        <Text>{JSON.stringify(name)}</Text>
+
+      <Rating
+        type='custom'
+        ratingImage={HEADPHONE_IMAGE}
+        ratingCount={5}
+        imageSize={60}
+        onFinishRating={this.ratingCompleted}
+        style={{ paddingVertical: 10 }}
+      />
+        <CheckBox
+          title="Favorite"
+          checked={this.state.checked}
+          onPress={() => this.setState({ checked: !this.state.checked })}/>
         <Text style={{marginBottom: 10}}>
           The idea with React Native Elements is more about component structure than actual design.
         </Text>
-        <Button
-          icon={<Icon name='code' color='#ffffff' />}
-          backgroundColor='#03A9F4'
-          fontFamily='Lato'
-          buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
-          title='VIEW NOW' />
+        <View backgroundColor= '#cccccc'>
+          {
+            listProfile.map((item, i) => (
+              <ListItem
+                key={i}
+                title={item.title}
+              />
+            ))
+          }
+        </View>
       </Card>
+    }
+        </ScrollView>
     );
   }
 }
@@ -88,28 +132,52 @@ const RootStack = createStackNavigator(
   },
   {
     initialRouteName: 'Home',
+    /* The header config from HomeScreen is now here */
+    navigationOptions: {
+      headerStyle: {
+        backgroundColor: '#33ccff',
+      },
+      headerTitleStyle: {
+        fontWeight: 'bold', textAlign:'center',flex: 1,
+      },
+    },
   }
 );
-
-export default class SplashScreen extends Component {
-  constructor(props) {
-    super(props)
-  }
-  render() {
-    return <RootStack />;
-  }
-}
 
 const list = [
   {
     name: 'Amy Farha',
     avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
-    subtitle: 'Vice President'
+    subtitle: 'Vice President',
+    description:'',
+    location:{
+    latitude:'',
+    longitude:''
+  },
   },
   {
     name: 'Chris Jackson',
     avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
-    subtitle: 'Vice Chairman'
+    subtitle: 'Vice Chairman',
+    location:{
+    latitude:'',
+    longitude:''
+  },
+  }
+]
+
+const listProfile = [
+  {
+    title: 'Credentials'
+  },
+  {
+    title: 'Examples'
+  },
+  {
+    title: 'Services'
+  },
+  {
+    title: 'Reviews'
   }
 ]
 

@@ -1,12 +1,5 @@
 import React, { Component } from 'react';
-import {
-  Button,
-  Item,
-  Input,
-  Icon,
-  Text,
-  Form
-} from 'native-base';
+import {Button, Item, Input, Icon, Text, Form} from 'native-base';
 import { observer } from 'mobx-react/native';
 import { observable } from 'mobx';
 
@@ -32,14 +25,14 @@ export default class Login extends Component {
       <Form>
         <Item style={{marginBottom: 10}} rounded>
           <Icon style={{color: "#fff"}} name='person-outline'/>
-          <Input style={{color: "#fff"}} 
+          <Input style={{color: "#fff"}}
             placeholder='Please Enter Email'
             placeholderTextColor="#fff"
             onChangeText={(email) => this.email = email}/>
         </Item>
         <Item style={{marginBottom: 10}} rounded>
           <Icon style={{color: "#fff"}} name='lock-open'/>
-          <Input style={{color: "#fff"}} 
+          <Input style={{color: "#fff"}}
             placeholder='Please Enter Password'
             placeholderTextColor="#fff"
             secureTextEntry={true}
